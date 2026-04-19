@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formation Manager</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Formation Manager</p>
+          <h1>Training catalog for modern teams</h1>
+        </div>
+        <div class="header-actions">
+          <span class="status-badge">Live catalog</span>
+          <button class="icon-button" aria-label="Notifications" type="button">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2Zm6-6V11c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.63 5.36 6 7.92 6 11v5l-1.75 1.75A.75.75 0 0 0 4 19.5h16a.75.75 0 0 0 .75-.75L18 16Z" fill="currentColor"/>
+            </svg>
+          </button>
+          {% if current_user.username == 'admin' %}
+          <a href="{{ url_for('create_formation') }}" class="admin-btn">Create formation</a>
+          {% endif %}
+          <div class="user-menu">
+            <button id="userMenuButton" class="user-button" type="button">
+              <span class="user-avatar">{{ current_user.username[0] | upper }}</span>
+              <span>{{ current_user.username }}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="user-dropdown" id="userDropdown" aria-hidden="true">
+              <div class="dropdown-profile">
+                <p class="dropdown-name">{{ current_user.username }}</p>
+                <p class="dropdown-role">Member access</p>
+              </div>
+              <div class="dropdown-divider"></div>
+              <a href="{{ url_for('logout') }}" class="dropdown-link">Logout</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="intro-panel">
+        <div>
+          <p class="intro-copy">
+            Discover curated formations such as HTML &amp; CSS fundamentals, product design, and leadership programs. Each formation includes title, category, duration, available seats, and a concise description.
+          </p>
+        </div>
+        <div class="filter-row">
+          <label for="categoryFilter">Filter by category</label>
+          <select id="categoryFilter" class="select-field">
+            <option value="all">All categories</option>
+          </select>
+        </div>
+      </section>
+
+      <main>
+        <div id="formationGrid" class="card-grid"></div>
+      </main>
+    </div>
+
+    <script>
+      window.App = {
+        isAdmin: {{ (current_user.username == 'admin') | tojson }},
+      };
+    </script>
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>

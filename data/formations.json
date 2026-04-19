@@ -1,0 +1,38 @@
+[
+  {
+    "title": "HTML & CSS Fundamentals",
+    "category": "Web",
+    "duration": "3 weeks",
+    "description": "Explore responsive HTML structures and modern CSS styling with practical examples and real interface builds."
+  },
+  {
+    "title": "Modern Product Design",
+    "category": "Design",
+    "duration": "4 weeks",
+    "description": "Learn a lightweight product design process that balances user research, prototyping, and polished UI execution."
+  },
+  {
+    "title": "Team Leadership Essentials",
+    "category": "Leadership",
+    "duration": "3 weeks",
+    "description": "Build practical skills for leading distributed teams, running effective meetings, and improving team alignment."
+  },
+  {
+    "title": "Data-Driven Growth",
+    "category": "Strategy",
+    "duration": "5 weeks",
+    "description": "Understand how to use analytics, customer feedback, and experiments to grow products with confidence."
+  },
+  {
+    "title": "Web Performance Fundamentals",
+    "category": "Engineering",
+    "duration": "2 weeks",
+    "description": "Optimize real-world websites for faster load times, better user experience, and measurable performance wins."
+  },
+  {
+    "title": "Customer Success Playbook",
+    "category": "Operations",
+    "duration": "3 weeks",
+    "description": "Create a scalable customer success workflow focused on retention, onboarding, and long-term satisfaction."
+  }
+]

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Formation — Formation Manager</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Admin panel</p>
+          <h1>Create a new formation</h1>
+        </div>
+        <div class="header-actions">
+          <a href="{{ url_for('home') }}" class="logout-btn">Back to catalog</a>
+        </div>
+      </header>
+
+      <section class="card detail-card">
+        <form method="POST" class="creation-form">
+          {% if message %}
+            <div class="flash-message">{{ message }}</div>
+          {% endif %}
+
+          <div class="form-grid">
+            <label>
+              Title
+              <input name="title" required />
+            </label>
+            <label>
+              Category
+              <input name="category" required />
+            </label>
+            <label>
+              Duration
+              <input name="duration" required placeholder="e.g. 3 weeks" />
+            </label>
+            <label>
+              Total seats
+              <input name="total_seats" type="number" min="1" value="12" required />
+            </label>
+          </div>
+
+          <label>
+            Description
+            <textarea name="description" rows="6" required></textarea>
+          </label>
+          <button type="submit" class="button primary">Create formation</button>
+        </form>
+      </section>
+    </div>
+  </body>
+</html>

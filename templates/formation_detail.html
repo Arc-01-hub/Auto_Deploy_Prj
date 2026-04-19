@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ formation.title }} — Formation Manager</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="detail-header">
+        <a href="{{ url_for('home') }}" class="back-link">← Back to catalog</a>
+        <div class="detail-actions">
+          <span class="category-pill">{{ formation.category }}</span>
+          <span class="duration">{{ formation.duration }}</span>
+        </div>
+      </header>
+
+      <section class="detail-card">
+        <div class="detail-heading">
+          <h1>{{ formation.title }}</h1>
+          <p class="detail-meta">{{ formation.reserved_seats }} registered · {{ formation.available_seats }} seats left</p>
+        </div>
+        <p class="card-description">{{ formation.description }}</p>
+
+        <form method="POST" class="detail-form">
+          {% if message %}
+            <div class="flash-message">{{ message }}</div>
+          {% endif %}
+
+          {% if formation.available_seats > 0 %}
+            {% if registered %}
+              <button type="button" class="button disabled" disabled>Already registered</button>
+            {% else %}
+              <button type="submit" class="button primary">Register for this formation</button>
+            {% endif %}
+          {% else %}
+            <button type="button" class="button disabled" disabled>Fully reserved</button>
+          {% endif %}
+        </form>
+      </section>
+    </div>
+  </body>
+</html>
