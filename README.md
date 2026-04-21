@@ -66,6 +66,63 @@ python app.py
    - Username: `admin`
    - Password: `password`
 
+## Push Docker image to Docker Hub
+
+1. Login once:
+   ```bash
+   docker login
+   ```
+2. Run the push script:
+   ```bash
+   ./push-images.sh
+   ```
+   Optional custom tag:
+   ```bash
+   ./push-images.sh v1.0.0
+   ```
+
+## Production deploy on VPS (pull from Docker Hub)
+
+Files added for production:
+- `docker-compose.prod.yml` (uses `laloperly/auto_deploy_prj:<tag>`)
+- `deploy-vps.sh` (pulls image and starts services)
+- `.env.prod.example` (production environment template)
+
+### VPS commands
+
+1. Connect to your VPS:
+   ```bash
+   ssh <vps_user>@161.97.182.212
+   ```
+2. Install Docker, Docker Compose plugin, and Git (Ubuntu):
+   ```bash
+   sudo apt update && sudo apt install -y docker.io docker-compose-plugin git
+   sudo usermod -aG docker "$USER"
+   newgrp docker
+   ```
+3. Clone project and enter directory:
+   ```bash
+   git clone https://github.com/Arc-01-hub/Auto_Deploy_Prj.git
+   cd Auto_Deploy_Prj
+   ```
+4. Make deploy script executable:
+   ```bash
+   chmod +x deploy-vps.sh
+   ```
+5. (Optional) Login to Docker Hub with token:
+   ```bash
+   export DOCKERHUB_USERNAME=laloperly
+   export DOCKERHUB_TOKEN=<your_dockerhub_access_token>
+   ```
+6. Deploy latest image:
+   ```bash
+   ./deploy-vps.sh
+   ```
+   Deploy specific tag:
+   ```bash
+   ./deploy-vps.sh v1.0.0
+   ```
+
 ## Production notes
 
 - The app defaults to `DEBUG=False` unless `FLASK_DEBUG=1`
