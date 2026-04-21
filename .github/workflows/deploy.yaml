@@ -25,7 +25,7 @@ jobs:
           script: |
 
             echo "🚀 Pulling latest code..."
-            cd /home/arc/Auto_Deploy_Prj
+            cd /root/Auto_Deploy_Prj
 
             git pull origin main
 
