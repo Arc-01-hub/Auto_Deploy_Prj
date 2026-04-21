@@ -1,0 +1,37 @@
+name: CI/CD Deploy Flask App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. نجيب الكود من GitHub
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. ندير SSH للسيرفر ديالك وننشر التطبيق
+      - name: Deploy to Ubuntu Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+
+            echo "🚀 Pulling latest code..."
+            cd Auto_Deploy_Prj
+
+            git pull origin main
+
+            echo "🧹 Stopping old containers..."
+            docker compose down
+
+            echo "🔨 Building new containers..."
+            docker compose up -d --build
+
+            echo "✅ Deployment finished!"
