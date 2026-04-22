@@ -5,6 +5,7 @@ import time
 from flask import Flask, jsonify, render_template, request, redirect, url_for, flash, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -210,7 +211,11 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        user = User.query.filter_by(username=username).first()
+        try:
+            user = User.query.filter_by(username=username).first()
+        except SQLAlchemyError:
+            app.logger.exception("Database error while processing login")
+            abort(503, description='Database is temporarily unavailable.')
         if user and user.check_password(password):
             login_user(user)
             return redirect(url_for('home'))
@@ -233,27 +238,43 @@ def get_formations():
 
 def init_db():
     with app.app_context():
-        for i in range(15):  # retry system مهم فـ Docker
+        last_error = None
+        for i in range(15):
             try:
                 db.create_all()
-                print("✅ DB connected & tables created")
-                break
-            except Exception as e:
-                print("⏳ Waiting for MySQL...", e)
+                app.logger.info("DB connected and tables ensured")
+                return
+            except SQLAlchemyError as exc:
+                last_error = exc
+                app.logger.warning("Waiting for database (%s/15)", i + 1, exc_info=exc)
                 time.sleep(3)
-                
-if __name__ == '__main__':
-    init_db()
 
+        raise RuntimeError("Unable to connect to the database after 15 retries") from last_error
+
+
+def ensure_seed_data():
     with app.app_context():
-        if not User.query.filter_by(username='admin').first():
-            admin = User(username='admin')
-            admin.set_password('password')
-            db.session.add(admin)
+        try:
+            if not User.query.filter_by(username='admin').first():
+                admin = User(username='admin')
+                admin.set_password('password')
+                db.session.add(admin)
 
-        seed_formations()
-        db.session.commit()
+            seed_formations()
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            raise
 
+
+def initialize_app():
+    init_db()
+    ensure_seed_data()
+
+
+initialize_app()
+
+if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
         port=int(os.getenv('PORT', 5000)),
