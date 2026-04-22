@@ -24,8 +24,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
 
-            echo "Pulling latest code..."
-            cd /home/arc/Auto_Deploy_Prj
+            echo "🚀 Pulling latest code..."
+            cd /root/Auto_Deploy_Prj
 
             git pull origin main
 
