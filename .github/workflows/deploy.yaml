@@ -21,7 +21,7 @@ jobs:
 
             echo " Deploy starting..."
 
-            cd /home/arc/Auto_Deploy_Prj
+            cd /root/Auto_Deploy_Prj
 
             echo " Syncing code..."
             git fetch origin
