@@ -10,12 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. نجيب الكود من GitHub
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # 2. ندير SSH للسيرفر ديالك وننشر التطبيق
-      - name: Deploy to Ubuntu Server via SSH
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_IP }}
@@ -24,15 +19,18 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
 
-            echo "🚀 Pulling latest code..."
-            cd /root/Auto_Deploy_Prj
+            echo " Deploy starting..."
 
-            git pull origin main
+            cd /home/arc/Auto_Deploy_Prj
 
-            echo "🧹 Stopping old containers..."
+            echo " Syncing code..."
+            git fetch origin
+            git reset --hard origin/main
+
+            echo " Stopping containers..."
             docker compose down
 
-            echo "🔨 Building new containers..."
+            echo " Building..."
             docker compose up -d --build
 
-            echo "✅ Deployment finished!"
+            echo "✅ Done!"
