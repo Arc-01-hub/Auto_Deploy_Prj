@@ -19,7 +19,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
 
-            echo " Deploy starting..."
+            echo "Deploy starting..."
 
             cd /root/Auto_Deploy_Prj
 
@@ -33,4 +33,4 @@ jobs:
             echo " Building..."
             docker compose up -d --build
 
-            echo "✅ Done!"
+            echo "Done"
